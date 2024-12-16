@@ -7,7 +7,7 @@ function App() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [location, setLocation] = useState(null);
-  const [geoSuccessMessage, setGeoSuccessMessage] = useState(""); // Geolokatsiya muvaffaqiyatli xabari
+  const [geoSuccessMessage, setGeoSuccessMessage] = useState(""); 
 
   const fetchData = () => {
     fetch("https://json-api.uz/api/project/ozodbek-todo-list/products")
@@ -22,26 +22,26 @@ function App() {
   useEffect(() => {
     fetchData();
 
-    // Saytga kirganda geolokatsiyani so'rash
+   
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setLocation({ latitude, longitude });
 
-          // Geolokatsiya muvaffaqiyatli olinganidan keyin xabar ko'rsatish
+
           setGeoSuccessMessage("Geolokatsiya muvaffaqiyatli saqlandi!");
           setTimeout(() => {
-            setGeoSuccessMessage(""); // 6-7 soniyadan keyin xabarni yashirish
-          }, 6000); // 6 sekunddan keyin yashirish
+            setGeoSuccessMessage(""); 
+          }, 6000); 
         },
         (error) => {
           console.error("Geolokatsiyani olishda xato:", error);
           alert("Geolokatsiyani olishda xatolik yuz berdi.");
         },
         {
-          enableHighAccuracy: true, // Yuqori aniqlikni ta'minlash
-          timeout: 5000, // 5 soniya ichida geolokatsiyani olishga harakat qilish
+          enableHighAccuracy: true, 
+          timeout: 5000, 
         }
       );
     } else {
@@ -127,7 +127,7 @@ function App() {
       </div>
 
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-xl">
-        {/* Geolokatsiya muvaffaqiyatli saqlangan xabarini ko'rsatish */}
+      
         {geoSuccessMessage && (
           <p className="text-green-600 text-sm mt-4">
             <strong>{geoSuccessMessage}</strong>
