@@ -35,8 +35,13 @@ function App() {
             setGeoSuccessMessage(""); // 6-7 soniyadan keyin xabarni yashirish
           }, 6000); // 6 sekunddan keyin yashirish
         },
-        () => {
-          alert("Geolokatsiyani olish rad etildi.");
+        (error) => {
+          console.error("Geolokatsiyani olishda xato:", error);
+          alert("Geolokatsiyani olishda xatolik yuz berdi.");
+        },
+        {
+          enableHighAccuracy: true, // Yuqori aniqlikni ta'minlash
+          timeout: 5000, // 5 soniya ichida geolokatsiyani olishga harakat qilish
         }
       );
     } else {
