@@ -7,6 +7,7 @@ function App() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [location, setLocation] = useState(null);
+  const [geoSuccessMessage, setGeoSuccessMessage] = useState(""); // Geolokatsiya muvaffaqiyatli xabari
 
   const fetchData = () => {
     fetch("https://json-api.uz/api/project/ozodbek-todo-list/products")
@@ -20,6 +21,27 @@ function App() {
 
   useEffect(() => {
     fetchData();
+
+    // Saytga kirganda geolokatsiyani so'rash
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+
+          // Geolokatsiya muvaffaqiyatli olinganidan keyin xabar ko'rsatish
+          setGeoSuccessMessage("Geolokatsiya muvaffaqiyatli saqlandi!");
+          setTimeout(() => {
+            setGeoSuccessMessage(""); // 6-7 soniyadan keyin xabarni yashirish
+          }, 6000); // 6 sekunddan keyin yashirish
+        },
+        () => {
+          alert("Geolokatsiyani olish rad etildi.");
+        }
+      );
+    } else {
+      alert("Geolokatsiya xizmati bu brauzerda qo'llab-quvvatlanmaydi.");
+    }
   }, []);
 
   const handleSubmit = (e) => {
@@ -30,58 +52,41 @@ function App() {
       return;
     }
 
-  
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ latitude, longitude });
+    fetch("https://json-api.uz/api/project/ozodbek-todo-list/products")
+      .then((response) => response.json())
+      .then((data) => {
+        const existingUser = data.data.find(
+          (item) => item.username === username
+        );
 
-          alert("Joylashuv saqlandi: " + latitude + ", " + longitude); 
-
-          fetch("https://json-api.uz/api/project/ozodbek-todo-list/products")
+        if (existingUser) {
+          setError("bu username allaqachon mavjud");
+        } else {
+          const newUser = { username, telephone };
+          fetch("https://json-api.uz/api/project/ozodbek-todo-list/products", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+          })
             .then((response) => response.json())
-            .then((data) => {
-              const existingUser = data.data.find(
-                (item) => item.username === username
-              );
-
-              if (existingUser) {
-                setError("bu user allaqachon mavjud");
-              } else {
-                const newUser = { username, telephone, location };
-                fetch("https://json-api.uz/api/project/ozodbek-todo-list/products", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(newUser),
-                })
-                  .then((response) => response.json())
-                  .then(() => {
-                    setSuccessMessage("Tasdiqdan o'tildi!");
-                    setError("");
-                    setUsername("");
-                    setTelephone("");
-                    fetchData();
-                  })
-                  .catch((error) => {
-                    console.error("Error adding user:", error);
-                    setError("Error adding user.");
-                  });
-              }
+            .then(() => {
+              setSuccessMessage("Tasdiqdan o'tildi!");
+              setError("");
+              setUsername("");
+              setTelephone("");
+              fetchData();
             })
             .catch((error) => {
-              console.error("Error fetching data:", error);
+              console.error("Error adding user:", error);
+              setError("Error adding user.");
             });
-        },
-        () => {
-          alert("Geolokatsiyani olishni rad etdiz. Formani to'ldirishda joylashuv kerak.");
         }
-      );
-    } else {
-      alert("Geolokatsiya xizmati bu brauzerda qo'llab-quvvatlanmaydi.");
-    }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
 
   return (
@@ -112,11 +117,23 @@ function App() {
         </p>
         <p className="mt-4 text-lg">
           <strong>Eslatma:</strong> Ovoz berish 2024-yil 22-dekabrda tugaydi.
-          Yutganlardan biriga 100,000 so'm mukofot beriladi!
+          Ovoz berganlardan biriga 100,000 so'm mukofot beriladi!
         </p>
       </div>
 
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-xl">
+        {/* Geolokatsiya muvaffaqiyatli saqlangan xabarini ko'rsatish */}
+        {geoSuccessMessage && (
+          <p className="text-green-600 text-sm mt-4">
+            <strong>{geoSuccessMessage}</strong>
+          </p>
+        )}
+        <p className="text-red-600 text-sm mt-4">
+          <strong>Diqqat!</strong> Formani noto'g'ri to'ldirish yoki soxta
+          ma'lumot berish jinoiy javobgarlikka olib kelishi mumkin. Iltimos,
+          ma'lumotlarni to'g'ri kiriting.
+        </p>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">
