@@ -22,14 +22,11 @@ function App() {
   useEffect(() => {
     fetchData();
 
-   
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setLocation({ latitude, longitude });
-
-
           setGeoSuccessMessage("Geolokatsiya muvaffaqiyatli saqlandi!");
           setTimeout(() => {
             setGeoSuccessMessage(""); 
@@ -127,7 +124,6 @@ function App() {
       </div>
 
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-xl">
-      
         {geoSuccessMessage && (
           <p className="text-green-600 text-sm mt-4">
             <strong>{geoSuccessMessage}</strong>
@@ -202,6 +198,13 @@ function App() {
         ) : (
           <p className="text-center text-gray-600">Malumot yoq</p>
         )}
+      </div>
+
+      {/* Doimiy pastki matn */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white text-center py-2">
+        <p className="text-sm text-gray-600">
+          Powered by <a href="https://json-api.uz" className="text-blue-500 underline">https://json-api.uz</a>
+        </p>
       </div>
     </div>
   );
