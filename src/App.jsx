@@ -7,7 +7,7 @@ function App() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [location, setLocation] = useState(null);
-  const [geoSuccessMessage, setGeoSuccessMessage] = useState(""); 
+  const [geoSuccessMessage, setGeoSuccessMessage] = useState("");
 
   const fetchData = () => {
     fetch("https://json-api.uz/api/project/ozodbek-todo-list/products")
@@ -29,16 +29,16 @@ function App() {
           setLocation({ latitude, longitude });
           setGeoSuccessMessage("Geolokatsiya muvaffaqiyatli saqlandi!");
           setTimeout(() => {
-            setGeoSuccessMessage(""); 
-          }, 6000); 
+            setGeoSuccessMessage("");
+          }, 6000);
         },
         (error) => {
           console.error("Geolokatsiyani olishda xato:", error);
           alert("Geolokatsiyani olishda xatolik yuz berdi.");
         },
         {
-          enableHighAccuracy: true, 
-          timeout: 5000, 
+          enableHighAccuracy: true,
+          timeout: 5000,
         }
       );
     } else {
@@ -203,7 +203,10 @@ function App() {
       {/* Doimiy pastki matn */}
       <div className="fixed bottom-0 left-0 right-0 bg-white text-center py-2">
         <p className="text-sm text-gray-600">
-          Powered by <a href="https://json-api.uz" className="text-blue-500 underline">https://json-api.uz</a>
+          Powered by{" "}
+          <a href="https://json-api.uz" className="text-blue-500 underline">
+            json-api.uz
+          </a>
         </p>
       </div>
     </div>
