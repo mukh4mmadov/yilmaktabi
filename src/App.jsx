@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [location, setLocation] = useState(null); // Geolokatsiya holati
+  const [location, setLocation] = useState(null);
 
   const fetchData = () => {
     fetch("https://json-api.uz/api/project/ozodbek-todo-list/products")
