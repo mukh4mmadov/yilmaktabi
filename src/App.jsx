@@ -94,12 +94,11 @@ function App() {
         </p>
         <p className="mt-4 text-lg">
           <strong>Eslatma:</strong> Ovoz berish 2024-yil 22-dekabrda tugaydi.
-          Yutganlardan biriga 100,000 so'm mukofot beriladi!
+          Ovoz berganlardan biriga 100,000 so'm mukofot beriladi!
         </p>
       </div>
 
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-xl">
-        {/* Ogohlantirish xabari */}
         <p className="text-red-600 text-sm mt-4">
           <strong>Diqqat!</strong> Formani noto'g'ri to'ldirish yoki soxta
           ma'lumot berish jinoiy javobgarlikka olib kelishi mumkin. Iltimos,
